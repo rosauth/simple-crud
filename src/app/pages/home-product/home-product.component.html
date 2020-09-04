@@ -1,0 +1,92 @@
+<div class="container">
+    
+    <button (click)="add(createModal)">New Item</button>
+
+    <table class="greyGridTable">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Expired Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let item of productList">
+                <td>{{ item.uuid }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.typeItem }}</td>
+                <td>{{ item.expiredDate * 1000 | date:'dd MMMM yyyy' }}</td>
+                <td style="padding=2px">
+                    <button (click)="update(updateModal, item.id)">Update</button>
+                    <button (click)="delete(deleteModal, item.id)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ng-template #createModal let-modal>
+        <div id="createModal">
+            <div class="modal-body">
+                <div>
+                    <label for="productName">Name</label>
+                    <input type="text" id="productName" [(ngModel)]="product.name">    
+                </div>
+
+                <div>   
+                    <label for="itemType">Category</label>
+                    <select name="itemType" id="itemType" [(ngModel)]="product.typeItem">
+                        <option *ngFor="let category of listItemType"> {{ category }}</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="expiredDate">Expired Date</label>
+                    <input type="date" id="expiredDate" [(ngModel)]="datePicked">
+                </div>
+
+                <button type="submit" (click)="modal.dismiss('save')">Add Item</button>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #updateModal let-modal>
+        <div id="updateModal">
+            <div class="modal-content">
+                <div>
+                    <label for="productId">ID</label>
+                    <input type="text" id="productId" [(ngModel)]="product.uuid" disabled>
+                </div>
+
+                <div>
+                    <label for="productName">Name</label>
+                    <input type="text" id="productName" [(ngModel)]="product.name">
+                </div>    
+
+                <div>   
+                    <label for="itemType">Category</label>
+                    <select name="itemType" id="itemType" [(ngModel)]="product.typeItem">
+                        <option *ngFor="let category of listItemType"> {{ category }}</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="expiredDate">Expired Date</label>
+                    <input type="date" id="expiredDate" [(ngModel)]="datePicked">
+                </div>
+                
+                <button type="submit" (click)="modal.dismiss('save')">Update</button>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #deleteModal let-modal>
+        <div class="deleteModal">
+            <h4>Are you sure you want to delete?</h4>
+            <button type="submit" (click)="modal.dismiss('delete')">Yes</button>
+            <button type="submit" (click)="modal.dismiss('dont-delete')">No</button>
+        </div>
+    </ng-template>
+</div>
